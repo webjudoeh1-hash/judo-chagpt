@@ -1,57 +1,43 @@
-'use client'
-import { useState } from 'react'
-import { supabase } from '@/lib/supabaseClient'
+"use client";
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+import { useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+
+export default function Home() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
-      password,
-    })
+      options: {
+        emailRedirectTo: `${window.location.origin}/perfil`,
+      },
+    });
 
-    if (error) setError(error.message)
-    else window.location.href = '/perfil'
+    if (error) {
+      setMessage("Error enviando enlace: " + error.message);
+    } else {
+      setMessage("Revisa tu correo para el enlace mágico ✉️");
+    }
 
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
-    <div className="login-container">
-      <h1 className="site-title">Plataforma privada - Academia Judo</h1>
-      <p className="lead">Ingresa con tu correo y contraseña</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+      <h1 className="text-3xl font-bold mb-4 text-center">
+        Plataforma privada - Academia Judo
+      </h1>
 
-      <form onSubmit={handleLogin} className="login-form" aria-label="login-form">
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <button type="submit" disabled={loading}>
-          {loading ? 'Ingresando...' : 'Entrar'}
-        </button>
-
-        {error && <p className="error">{error}</p>}
-      </form>
-    </div>
-  )
-}
+      <form
+        onSubmit={handleLogin}
+        className="bg-white shadow-md rounded-xl p-6 w-full max-w-sm"
+      >
+        <label className="block text-gray-700 mb-2 text-sm font-semibold">
+          Ingre
