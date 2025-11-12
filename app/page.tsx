@@ -8,7 +8,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
@@ -40,4 +40,5 @@ export default function Home() {
         className="bg-white shadow-md rounded-xl p-6 w-full max-w-sm"
       >
         <label className="block text-gray-700 mb-2 text-sm font-semibold">
-          Ingre
+          Ingresa con tu correo registrado
+        </label>
